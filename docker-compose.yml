@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  robotaksi_stack:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: robotaksi_stack
+    volumes:
+      - ./src:/ros2_ws/src
+    environment:
+      - DISPLAY=${DISPLAY}
+    network_mode: host
+    command: ros2 launch robotaksi_bringup robotaksi_system.launch.py
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: robotaksi_dashboard
+    command: python3 tools/dashboard.py
+    network_mode: host
