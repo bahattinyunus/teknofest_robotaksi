@@ -167,7 +167,61 @@ ros2 launch robotaksi_sim world.launch.py
 
 ---
 
-## 👨‍💻 Author Info
+## 🌌 Vizyon ve Gelecek (Lore & Vision)
+"Otonomi sadece kod yazmak değil, bir şehre ruh katmaktır."
+Robotaksi projesi, karmaşık şehir dinamiklerini anlamlandıran, etik kurallar çerçevesinde karar veren ve insan hatasını minimize eden bir **"Yapay Zeka Şoförü"** vizyonuyla geliştirilmektedir. Sadece A noktasından B noktasına gitmiyoruz; geleceğin ulaşım mimarisini kodluyoruz.
+
+---
+
+## 🏎️ Donanım Mimarisi (Hardware Blueprint)
+Yazılımımızın gücü, seçtiğimiz endüstriyel standartlardaki donanımlarla buluşuyor.
+
+| Bileşen | Model/Özellik | Görevi |
+| :--- | :--- | :--- |
+| **Compute Unit** | NVIDIA Jetson Orin Nano / Xavier | Derin Öğrenme & Kontrol |
+| **LiDAR** | Velodyne VLP-16 / Robosense | 360° Engel Tespiti |
+| **Camera** | Leopard Imaging GMSL2 | Şerit & Trafik İşareti Algılama |
+| **IMU/GNSS** | Emlid Reach M2 / Bosch | Hassas Lokalizasyon |
+| **V-Box** | Custom STM32 Drive-By-Wire | Fiziksel Araç Kontrolü |
+
+---
+
+## 📐 Matematiksel Temeller (Mathematical Core)
+Kontrol ve planlama algoritmalarımız sıkı matematiksel modeller üzerine kuruludur.
+
+### 1. Stanley Kontrolcü (Lateral Control)
+Direksiyon açısı ($\delta$), hatat payı ($e$) ve araç hızı ($v$) arasındaki ilişki:
+$$\delta(t) = \psi_e(t) + \tan^{-1}\left(\frac{k \cdot e(t)}{v(t)}\right)$$
+*Burada $\psi_e$ yönelim hatasını, $k$ ise kazanç parametresini temsil eder.*
+
+### 2. A* Pathfinding (Global Planning)
+Düğüm maliyeti hesaplama:
+$$f(n) = g(n) + h(n)$$
+* $g(n)$: Başlangıçtan düğüme olan gerçek maliyet.
+* $h(n)$: Düğümden hedefe olan tahmini (heuristic) maliyet.
+
+---
+
+## 🛣️ Stratejik Yol Haritası (Strategic Roadmap)
+
+### 🟢 2025: Faz 1 - Stabilite & Hassasiyet
+- [x] Otonom Sürüş Yığını (Basic Stack) kurulumu.
+- [x] Stanley Controller entegrasyonu.
+- [x] LiDAR + Kamera Füzyonu (Gelişmiş).
+
+### 🟡 2025 Son Çeyrek: Faz 2 - Dynamic Intelligence
+- [ ] V2X (Vehicle-to-Everything) simülasyonları.
+- [ ] Dinamik Engellere Karşı Sosyal Navigasyon (Social Navigation).
+- [ ] End-to-End Deep Learning ile Şerit Takibi Deneyleri.
+
+### 🔴 2026: Faz 3 - Şehir Ölçekli Otonomi
+- [ ] Karmaşık Kavşak & Döner Kavşak Yönetimi.
+- [ ] Otonom Vale (Auto-Valet) Park Sistemi.
+- [ ] Fleet Management (Filo Yönetimi) API Entegrasyonu.
+
+---
+
+## �‍💻 Author Info
 
 <div align="center">
 
