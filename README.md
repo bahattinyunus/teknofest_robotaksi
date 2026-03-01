@@ -1,4 +1,4 @@
-﻿# � TEKNOFEST Robotaksi Binek Otonom Araç Yarışması
+﻿# 🤖 TEKNOFEST Robotaksi Binek Otonom Araç Yarışması
 ### 🚀 Autonomous Passenger Transport Command Center
 
 <div align="center">
@@ -16,7 +16,7 @@
 
 ---
 
-## � Görev Tanımı (Mission Directive)
+## 🎯 Görev Tanımı (Mission Directive)
 **TEKNOFEST Robotaksi Binek Otonom Araç Yarışması**, şehir içi trafik senaryolarında sürücüsüz, güvenli ve kurallara uygun seyahat edebilen otonom araçlar geliştirmeyi hedefler. Bu depo, aracın **algılama**, **planlama** ve **kontrol** yeteneklerini yöneten merkezi sinir sistemini barındırır.
 
 > **Hedef:** Tam otonom sürüş ile belirlenen rotayı takip etmek, engellerden kaçınmak ve yolcuları güvenle hedefe ulaştırmak.
@@ -44,32 +44,81 @@ graph TD
     subgraph Control [⚙️ Kontrol Katmanı]
         Local -->|Hedef Rota| DBW[Drive-By-Wire Interface]
         DBW -->|Gaz/Fren/Direksiyon| Vehicle[Araç Özeti]
-        PID[PID Kontrolcü] -.-> DBW
-        MPC[Model Predictive Control] -.-> DBW
+        PID[PID Longitudinal] -.-> DBW
+        Stanley[Stanley Lateral] -.-> DBW
+    end
+    
+    subgraph Health [📊 Sistem Sağlığı]
+        Diag[Diagnostics Node] -.->|Monitoring| Control
     end
 
     style Fusion fill:#1f4068,stroke:#162447,color:#fff
     style Planning fill:#162447,stroke:#1f4068,color:#fff
     style Control fill:#0f3460,stroke:#1f4068,color:#fff
+    style Health fill:#4e342e,stroke:#3e2723,color:#fff
 ```
 
 ### 🧠 Çekirdek Modüller
 
 #### 1. Perception (Algılama)
 Dünyayı anlamlandırma modülü.
-- **YOLOv8/v11:** Trafik işaretleri, yayalar ve diğer araçların tespiti.
+- **Advanced Detector:** YOLOv8 mimarisi ve fallback olarak adaptif eşikleme (Adaptive Thresholding) ile dinamik engel tespiti.
 - **LiDAR Clustering:** DBSCAN/Euclidean Clustering ile engellerin 3D konumlandırılması.
 - **Lane Detection:** OpenCV ve Derin Öğrenme tabanlı şerit takibi.
 
 #### 2. Planning (Planlama)
 En güvenli ve verimli rotanın hesaplanması.
-- **Global Planner:** GPS koordinatları üzerinden ana güzergahın (Waypoints) belirlenmesi.
-- **Local Planner:** Anlık engellerden kaçınma (Obstacle Avoidance) ve hız profili oluşturma.
+- **Global Planner:** GPS ve A* algoritması üzerinden ana güzergahın (Waypoints) belirlenmesi.
+- **Local Planner:** Anlık engellerden kaçınma (Obstacle Avoidance) ve dinamik hız profili oluşturma.
 
 #### 3. Control (Kontrol)
 Fiziksel aracın yönetimi.
-- **Pure Pursuit / Stanley:** Yanal kontrol (Direksiyon açısı).
-- **PID / MPC:** Boylamsal kontrol (Hız ve ivmelenme).
+- **Stanley Controller:** Yanal kontrol (Direksiyon açısı) için geometrik izleme algoritması.
+- **PID Controller:** Boylamsal kontrol (Hız ve ivmelenme) için anti-windup destekli yapı.
+- **Velocity Profiling:** Virajlarda ve engel durumunda otomatik hız ayarlama.
+
+#### 4. Diagnostics (Teşhis)
+Sistem sağlığının izlenmesi.
+- **psutil Monitoring:** CPU ve Bellek kullanımının gerçek zamanlı takibi ve kritik yük uyarısı.
+
+---
+
+## 🔍 Rakip ve Benzer Yarışma Analizi
+Otonom araç teknolojileri dünya çapında çeşitli yarışmalarla desteklenmektedir. TEKNOFEST Robotaksi dışında, mimari tasarım ve strateji geliştirirken incelenmesi gereken ana yarışmalar platformları, açık kaynak kodları ve şartnameleriyle aşağıda listelenmiştir:
+
+### 🏎️ Formula Student Driverless (FSD)
+Dünya çapındaki üniversite öğrencilerinin otonom yarış araçları geliştirdiği en prestijli etkinliklerden biridir.
+- **Kapsam:** Yüksek hızlı otonom sürüş, dinamik engeller, koni tabanlı yol bulma (Trackdrive) ve ivmelenme testleri.
+- **Şartname (Kurallar):** [FSG Kurallar Kitapçığı (PDF)](https://www.formulastudent.de/fsg/rules/)
+- **Örnek Açık Kaynak Repoları:**
+  - [AMZ Driverless (ETH Zurich)](https://github.com/AMZ-Racing) - Sektördeki en iyi otonom öğrenci takımlarından.
+  - [FSD Simulator](https://github.com/FS-Driverless/Formula-Student-Driverless-Simulator) - FS-Online ve diğer FSD yarışmaları için topluluk yapımı simülatör. ROS/ROS2 uyumludur.
+  - [bitfsd (Beijing Institute of Tech)](https://github.com/bitfsd/fsd_algorithm) - ROS Melodic üzerinde basit ve anlaşılır bir otonom mimari.
+
+### 🚗 F1TENTH
+Gerçek Formula 1 araçlarının 1/10 ölçekli otonom versiyonlarıyla yapılan, algoritma verimliliğini hedefleyen yarışma.
+- **Kapsam:** Head-to-head hızlı otonom yarış, LiDAR tabanlı SLAM, engel tespiti ve reaktif kontrol.
+- **Şartname (Kurallar):** [F1TENTH Resmi Kurallar](https://f1tenth.org/race.html)
+- **Örnek Açık Kaynak Repoları:**
+  - [F1TENTH Gym](https://github.com/f1tenth/f1tenth_gym) - F1TENTH araçları için 2D simülasyon ortamı.
+  - [F1TENTH System](https://github.com/f1tenth/f1tenth_system) - Otonom araç yazılım katmanı (ROS 2 Humble desteği).
+
+### 🤖 Intelligent Ground Vehicle Competition (IGVC)
+Dış mekan, otonom askeri/sivil araç tasarımını destekleyen köklü bir yarışma.
+- **Kapsam:** GPS tabanlı ara yolu planlaması, şerit takibi (beyaz çizgiler), engel tespiti.
+- **Şartname (Kurallar):** [IGVC Kuralları](http://www.igvc.org/rules.htm)
+- **Örnek Açık Kaynak Repoları:** Takımlar kendi kodlarını açık kaynak yapmaktadır (Örn: [UKyKORA IGV](https://github.com/UKyKORA/IGV)).
+
+### 🏁 Indy Autonomous Challenge (IAC)
+Gerçek boyutlu Indy yarış araçlarıyla yapılan yüksek hızlı otonom yarışması (Hız > 250 km/h).
+- **Kapsam:** Multi-agent (çoklu araç) otonom sürüş, yüksek hız aerodinamiği ve karar alma yönetimi.
+- Tıpkı Teknofest Robotaksi'deki otoyol ve şehir içi taşıma senaryolarının "ekstrem sınırlarını" temsil ettiği için mimari kararlarda ilham alınacak bir üst aşamadır.
+
+**💡 Bu yarışmalardan alınabilecek stratejik ilhamlar (Robotaksi için):**
+- **FSD'den** LiDAR ve koni bazlı kesin lokalizasyon (FastSLAM) teknikleri,
+- **F1TENTH'ten** reaktif, düşük gecikmeli engelden kaçınma yaklaşımı,
+- **IGVC'den** dış mekan ışık değişimlerinde sağlam şerit bulma algoritmaları,
+TEKNOFEST Robotaksi mimarisine doğrudan entegre edilebilecek güçlü alt yapılardır.
 
 ---
 
@@ -136,8 +185,8 @@ Otonom sistemler, yapay zeka ve robotik üzerine tutkulu bir mühendis. TEKNOFES
 
 ## 📜 Lisans
 Bu proje [MIT Lisansı](LICENSE) altında lisanslanmıştır.
-
 *Copyright © 2025 Bahattin Yunus Çetin.*
+
 <p align="center">
   <img src="https://img.shields.io/badge/Powered%20By-TEKNOFEST-red?style=for-the-badge&logo=rocket&logoColor=white" alt="TEKNOFEST Support">
 </p>
