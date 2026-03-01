@@ -23,6 +23,7 @@ setup(
     entry_points={
         'console_scripts': [
             'obstacle_detector = robotaksi_perception.obstacle_detector:main',
+            'lane_detector = robotaksi_perception.lane_detector:main',
         ],
     },
 )

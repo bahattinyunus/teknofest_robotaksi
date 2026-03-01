@@ -21,6 +21,9 @@ setup(
     entry_points={
         'console_scripts': [
             'pid_controller = robotaksi_control.pid_controller:main',
+            'ekf_localizer = robotaksi_control.ekf_localizer:main',
+            'behavior_fsm = robotaksi_control.behavior_fsm:main',
+            'diagnostics = robotaksi_control.diagnostics:main',
         ],
     },
 )

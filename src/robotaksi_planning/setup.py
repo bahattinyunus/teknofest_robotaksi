@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'global_planner = robotaksi_planning.global_planner:main',
+            'local_planner = robotaksi_planning.local_planner:main',
         ],
     },
 )
